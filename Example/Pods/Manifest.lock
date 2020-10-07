@@ -1,0 +1,16 @@
+PODS:
+  - NerdzDate (0.1.0)
+
+DEPENDENCIES:
+  - NerdzDate (from `../`)
+
+EXTERNAL SOURCES:
+  NerdzDate:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  NerdzDate: f1ffe28bc37fed2790e7af00d1e3661b85ba368c
+
+PODFILE CHECKSUM: 5b6b4e8a09c4aae4d4a1e8130b338b6e4842be05
+
+COCOAPODS: 1.9.3

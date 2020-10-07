@@ -1,0 +1,6 @@
+framework module NerdzDate {
+  umbrella header "NerdzDate-umbrella.h"
+
+  export *
+  module * { export * }
+}
