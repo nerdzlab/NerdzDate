@@ -41,7 +41,7 @@ public extension Date {
         
         // Strange fix for weeks
         if let weekday = self[.weekday], component == .weekOfMonth || component == .weekOfYear {
-            result = result.adding(.day(-weekday))
+            result = result.adding(.day(-weekday + 1))
         }
         
         return result
