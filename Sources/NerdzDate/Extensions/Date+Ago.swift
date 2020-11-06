@@ -7,30 +7,55 @@
 
 import Foundation
 
+public enum TimeAgoStyle {
+    case short, full
+    
+    
+    func suffix(for component: TimeAgoComponent, isPlural: Bool) -> String {
+        switch component {
+        case .second: return (self == .short ? "s" : (isPlural ? "seconds" : "second"))
+        case .minute: return (self == .short ? "m" : (isPlural ? "minutes" : "minute"))
+        case .hour: return (self == .short ? "h" : (isPlural ? "hours" : "hour"))
+        case .day: return (self == .short ? "d" : (isPlural ? "days" : "day"))
+        case .month: return (self == .short ? "mo" : (isPlural ? "months" : "month"))
+        case .year: return (self == .short ? "y" : (isPlural ? "years" : "year"))
+        }
+    }
+}
+
+public enum TimeAgoComponent {
+    case second, minute, hour, day, month, year
+    
+    func text(for value: Int, style: TimeAgoStyle) -> String {
+        let suffix: String = style.suffix(for: self, isPlural: value != 1)
+        return "\(value) \(suffix)"
+    }
+}
+
 public extension Date {
-    var agoString: String {
+    func agoString(style: TimeAgoStyle) -> String {
         let interval = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self, to: .now)
         
         if let years = interval.year, years > 0 {
-            return "\(years)y"
+            return TimeAgoComponent.year.text(for: years, style: style) + " ago"
         } 
         else if let months = interval.month, months > 0 {
-            return "\(months)mo"
+            return TimeAgoComponent.month.text(for: months, style: style) + " ago"
         } 
         else if let days = interval.day, days > 0 {
-            return "\(days)d"
+            return TimeAgoComponent.day.text(for: days, style: style) + " ago"
         } 
         else if let hours = interval.hour, hours > 0 {
-            return "\(hours)h"
+            return TimeAgoComponent.hour.text(for: hours, style: style) + " ago"
         } 
         else if let minutes = interval.minute, minutes > 0 {
-            return "\(minutes)m"
+            return TimeAgoComponent.minute.text(for: minutes, style: style) + " ago"
         } 
         else if let seconds = interval.second, seconds > 0 {
-            return "\(seconds)s"
+            return TimeAgoComponent.second.text(for: seconds, style: style) + " ago"
         } 
         else {
-            return "Now"
+            return "Just now"
         }
     }
 }
