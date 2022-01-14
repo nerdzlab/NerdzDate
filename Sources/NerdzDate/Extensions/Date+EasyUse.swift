@@ -7,41 +7,35 @@
 
 import Foundation
 
-public extension Date {
+public extension NZDateExtensionData where Base == Date {
     static var now: Date {
         Date()
     }
 
     var allComponents: DateComponents {
-        Calendar.current.dateComponents(Set(Calendar.Component.allComponents), from: self)
-    }
-    
-    subscript(_ component: Calendar.Component) -> Int? {
-        get {
-            Calendar.current.component(component, from: self)
-        }
+        Calendar.current.dateComponents(Set(Calendar.Component.nz.allComponents), from: base)
     }
     
     func isInSameDay(as date: Date) -> Bool {
-        Calendar.current.isDate(date, inSameDayAs: self)
+        Calendar.current.isDate(date, inSameDayAs: base)
     }
     
-    func adding(_ range: DateRange) -> Date {        
-        return Calendar.current.date(byAdding: range.component, value: range.value, to: self) ?? self
+    func adding(_ range: DateRange) -> Date {
+        return Calendar.current.date(byAdding: range.component, value: range.value, to: base) ?? base
     }
     
     func start(of component: Calendar.Component) -> Date {
         var components = allComponents
         
-        for innerComponent in component.includedComponents {
+        for innerComponent in component.nz.includedComponents {
             components[innerComponent] = 0
         }
         
-        var result = Calendar.current.date(from: components) ?? self
+        var result = Calendar.current.date(from: components) ?? base
         
         // Strange fix for weeks
-        if let weekday = self[.weekday], component == .weekOfMonth || component == .weekOfYear {
-            result = result.adding(.day(-weekday + 1))
+        if let weekday = base[.weekday], component == .weekOfMonth || component == .weekOfYear {
+            result = result.nz.adding(.day(-weekday + 1))
         }
         
         return result
@@ -49,11 +43,19 @@ public extension Date {
 
     func end(of component: Calendar.Component) -> Date {
         start(of: component)
-            .adding(DateRange(component: component, value: 1))
-            .adding(.second(-1))
+            .nz.adding(DateRange(component: component, value: 1))
+            .nz.adding(.second(-1))
+    }
+}
+
+public extension Date {
+    subscript(_ component: Calendar.Component) -> Int? {
+        get {
+            Calendar.current.component(component, from: self)
+        }
     }
     
     static func + (lhs: Self, rhs: DateRange) -> Self {
-        lhs.adding(rhs)
+        lhs.nz.adding(rhs)
     }
 }
