@@ -7,20 +7,22 @@
 
 import Foundation
 
-public extension Date {
+public extension NZDateExtensionData where Base == Date {
     enum Weekday: Int {
         case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
     }
     
     func next(
         _ weekday: Weekday,
-        considerToday: Bool = false) -> Date? {
+        considerToday: Bool = false
+    ) -> Date? {
         findWeekDayDate(weekday, direction: .forward, considerToday: considerToday)
     }
     
     func previous(
         _ weekday: Weekday,
-        considerToday: Bool = false) -> Date? {
+        considerToday: Bool = false
+    ) -> Date? {
         findWeekDayDate(weekday, direction: .backward, considerToday: considerToday)
     }
     
@@ -33,12 +35,12 @@ public extension Date {
         let calendar = Calendar(identifier: .gregorian)
         let components = DateComponents(weekday: weekday.rawValue)
         
-        if considerToday && calendar.component(.weekday, from: self) == weekday.rawValue {
-            return self
+        if considerToday && calendar.component(.weekday, from: base) == weekday.rawValue {
+            return base
         }
         
         return calendar.nextDate(
-            after: self,
+            after: base,
             matching: components,
             matchingPolicy: .nextTime,
             direction: direction

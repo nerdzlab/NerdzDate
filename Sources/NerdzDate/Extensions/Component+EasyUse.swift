@@ -7,61 +7,63 @@
 
 import Foundation
 
-public extension Calendar.Component {
+extension Calendar.Component: NZDateExtensionCompatible { }
+
+public extension NZDateExtensionData where Base == Calendar.Component {
     
     static var allComponents: [Calendar.Component] {
         [
-            nanosecond, 
-            second, 
-            minute,
-            hour,
-            day, 
-            month, 
-            year, 
-            era, 
-            weekday, 
-            quarter, 
-            weekOfMonth, 
-            weekOfYear, 
-            timeZone, 
-            yearForWeekOfYear,
-            timeZone,
-            calendar
+            Base.nanosecond,
+            Base.second,
+            Base.minute,
+            Base.hour,
+            Base.day,
+            Base.month,
+            Base.year,
+            Base.era,
+            Base.weekday,
+            Base.quarter,
+            Base.weekOfMonth,
+            Base.weekOfYear,
+            Base.timeZone,
+            Base.yearForWeekOfYear,
+            Base.timeZone,
+            Base.calendar
         ]
     }
     
     var allComponents: [Calendar.Component] {
-        includedComponents + [self]
+        includedComponents + [base]
     }
     
     var includedComponents: [Calendar.Component] {
-        switch self {
+        switch base {
         case .era:
-            return Calendar.Component.year.allComponents
+            return Calendar.Component.year.nz.allComponents
             
         case .year, .yearForWeekOfYear:
-            return Calendar.Component.month.allComponents
+            return Calendar.Component.month.nz.allComponents
             
         case .quarter:
-            return Calendar.Component.month.allComponents
+            return Calendar.Component.month.nz.allComponents
             
         case .month:
-            return Calendar.Component.day.allComponents
+            return Calendar.Component.day.nz.allComponents
             
         case .weekOfYear, .weekOfMonth:
-            return Calendar.Component.weekday.allComponents
+            return Calendar.Component.weekday.nz.allComponents
             
         case .day, .weekday, .weekdayOrdinal:
-            return Calendar.Component.hour.allComponents
+            return Calendar.Component.hour.nz.allComponents
             
         case .hour:
-            return Calendar.Component.minute.allComponents
+            return Calendar.Component.minute.nz.allComponents
             
         case .minute:
-            return Calendar.Component.second.allComponents
+            return Calendar.Component.second.nz.allComponents
             
         case .second:
-            return Calendar.Component.nanosecond.allComponents
+            return Calendar.Component.nanosecond.nz.allComponents
             
         case .nanosecond:
             return []

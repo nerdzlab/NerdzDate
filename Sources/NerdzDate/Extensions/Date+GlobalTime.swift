@@ -7,16 +7,16 @@
 
 import Foundation
 
-public extension Date {
+public extension NZDateExtensionData where Base == Date {
     var global: Date {
         let timezone = TimeZone.current
-        let seconds = -TimeInterval(timezone.secondsFromGMT(for: self))
-        return Date(timeInterval: seconds, since: self)
+        let seconds = -TimeInterval(timezone.secondsFromGMT(for: base))
+        return Date(timeInterval: seconds, since: base)
     }
     
     var local: Date {
         let timezone = TimeZone.current
-        let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
-        return Date(timeInterval: seconds, since: self)
+        let seconds = TimeInterval(timezone.secondsFromGMT(for: base))
+        return Date(timeInterval: seconds, since: base)
     }
 }
